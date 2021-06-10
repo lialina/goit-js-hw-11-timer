@@ -1,42 +1,11 @@
 const bodyElement = document.querySelector('body');
 
-let timerDiv = `<div class="timer" id="timer-1">
-  <div class="field">
-    <span class="value" data-value="days">11</span>
-    <span class="label">Days</span>
-  </div>
-
-  <div class="field">
-    <span class="value" data-value="hours">11</span>
-    <span class="label">Hours</span>
-  </div>
-
-  <div class="field">
-    <span class="value" data-value="mins">11</span>
-    <span class="label">Minutes</span>
-  </div>
-
-  <div class="field">
-    <span class="value" data-value="secs">11</span>
-    <span class="label">Seconds</span>
-  </div>
-</div>`;
-
-bodyElement.insertAdjacentHTML('beforeend', timerDiv);
-
 const timerElement = document.querySelector('.timer');
 console.log(timerElement);
 
-const refs = {
-  daysAmount: document.querySelector('span[data-value="days"]'),
-  hoursAmount: document.querySelector('span[data-value="hours"]'),
-  minsAmount: document.querySelector('span[data-value="mins"]'),
-  secsAmount: document.querySelector('span[data-value="secs"]'),
-};
-
 class CountdownTimer {
   constructor({selector, targetDate, onTick} = {}) {
-    this.selector = selector;
+    this.elements = this.getElements(selector);
     this.targetDate = targetDate;
     this.onTick = onTick;
   }
@@ -52,6 +21,18 @@ class CountdownTimer {
       this.onTick(time);
     }, 1000);
   };
+
+  
+  getElements(selector) {
+    const refs = {
+      daysAmount: document.querySelector(`${selector} span[data-value="days"]`),
+      hoursAmount: document.querySelector(`${selector} span[data-value="hours"]`),
+      minsAmount: document.querySelector(`${selector} span[data-value="mins"]`),
+      secsAmount: document.querySelector(`${selector} span[data-value="secs"]`),
+    };
+
+    return refs;
+  }
 
   getTimeComponents(time) {
     const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
@@ -76,8 +57,8 @@ const countdownTimer = new CountdownTimer({
 countdownTimer.start();
 
 function updatetextContentInterface({ days, hours, mins, secs }) {
-  refs.daysAmount.textContent = `${days}`;
-  refs.hoursAmount.textContent = `${hours}`;
-  refs.minsAmount.textContent = `${mins}`;
-  refs.secsAmount.textContent = `${secs}`;
+  countdownTimer.elements.daysAmount.textContent = `${days}`;
+  countdownTimer.elements.hoursAmount.textContent = `${hours}`;
+  countdownTimer.elements.minsAmount.textContent = `${mins}`;
+  countdownTimer.elements.secsAmount.textContent = `${secs}`;
 };
