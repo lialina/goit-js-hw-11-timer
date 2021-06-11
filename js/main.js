@@ -1,7 +1,6 @@
 const bodyElement = document.querySelector('body');
 
 const timerElement = document.querySelector('.timer');
-console.log(timerElement);
 
 class CountdownTimer {
   constructor({selector, targetDate, onTick} = {}) {
@@ -43,6 +42,13 @@ class CountdownTimer {
     return { days, hours, mins, secs };
   }
 
+  updateTextContentInterface({ days, hours, mins, secs }) {
+    countdownTimer.elements.daysAmount.textContent = `${days}`;
+    countdownTimer.elements.hoursAmount.textContent = `${hours}`;
+    countdownTimer.elements.minsAmount.textContent = `${mins}`;
+    countdownTimer.elements.secsAmount.textContent = `${secs}`;
+  };
+
   pad(value) {
     return String(value).padStart(2, '0');
   };
@@ -51,14 +57,7 @@ class CountdownTimer {
 const countdownTimer = new CountdownTimer({
   selector: '#timer-1',
   targetDate: new Date('Dec 31, 2021'),
-  onTick: updatetextContentInterface,
+  onTick: countdownTimer.updateTextContentInterface,
 });
 
 countdownTimer.start();
-
-function updatetextContentInterface({ days, hours, mins, secs }) {
-  countdownTimer.elements.daysAmount.textContent = `${days}`;
-  countdownTimer.elements.hoursAmount.textContent = `${hours}`;
-  countdownTimer.elements.minsAmount.textContent = `${mins}`;
-  countdownTimer.elements.secsAmount.textContent = `${secs}`;
-};
